@@ -1,0 +1,1835 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Test math</title>
+
+    <link rel="icon" href="./static/img/favicon.ico">
+    <link href="./static/css/libs/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="./static/css/main.css" rel="stylesheet" type="text/css">
+
+    <script src="./static/js/libs/jquery-3.4.1.min.js"></script>
+    <script src="./static/js/libs/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="./static/js/libs/y_cookie.js"></script>
+    <script src="./static/js/libs/check_task_solution.js"></script>
+    <script src="./static/js/libs/jquery.maskedinput.min.js"></script>
+</head>
+<body>
+    <div class="modal fade" id="alertModal" tabindex="1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true" style="z-index: 3000;">
+        <div class="modal-dialog mx-auto mt-5 pt-5" role="document">
+            <div class="modal-content" style="margin-top: 110px;box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.35);">
+                <div class="head mt-4 text-center">
+                    <img class='mb-3' src="./static/img/alert.svg">
+                </div>
+                <div class="modal-body">
+                    <h5 class="mt-4 mb-3 text-center" id="alertModalMessage"></h5>
+                </div>
+                <div onclick='hideModal("#alertModal")' class="close"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="taskAboutModal" tabindex="1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true" style="z-index: 3000;">
+        <div class="modal-dialog mx-auto mt-5 pt-5" role="document">
+            <div class="modal-content" style="margin-top: 110px;box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.35);">
+                <div class="head mt-5 text-center">
+                    <img class='mb-3' src="./static/img/task_about.svg">
+                </div>
+                <div class="modal-body">
+                    <h5 class="mt-4 mb-3 text-center" id="taskAboutMessage"></h5>
+                </div>
+                <button class="mt-4 mb-5 mx-auto" type="button" onclick='hideModal("#taskAboutModal")'>Продолжить</button>
+                <!--            <div onclick='hideModal("#taskAboutModal")' class="close"></div> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="congratulationModal" tabindex="1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true" style="z-index: 3000;">
+        <div class="modal-dialog mx-auto mt-5 pt-5" role="document">
+            <div class="modal-content" style="margin-top: 110px;box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.35);">
+                <div class="head mt-5 text-center">
+                    <img class='mb-3' src="./static/img/task_win.svg">
+                </div>
+                <div class="modal-body">
+                    <h5 class="mt-4 mb-3 text-center">Задача решена!</h5>
+                </div>
+                <button class="mt-4 mb-5 mx-auto" type="button" onclick='hideModal2()'>Закрыть</button>
+                <div onclick='hideModal("#congratulationModal")' class="close"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="taskErrorModal" tabindex="1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true" style="z-index: 3000;">
+        <div class="modal-dialog mx-auto mt-5 pt-5" role="document">
+            <div class="modal-content" style="margin-top: 110px;box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.35);">
+                <div class="head mt-5 text-center">
+                    <img class='mb-3' src="./static/img/task_lose.svg">
+                </div>
+                <div class="modal-body">
+                    <h5 class="mt-4 mb-3 text-center">Задача решена некорректно</h5>
+                </div>
+                <button class="mt-4 mb-5 mx-auto" type="button" onclick='hideModal("#taskErrorModal")'>Попробовать еще раз</button>
+                <!--            <div onclick='hideModal("#taskAboutModal")' class="close"></div> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal_link" tabindex="-1" role="dialog" aria-labelledby="managerCopyPastLabel" aria-hidden="true">
+        <div class="modal-dialog mx-auto mt-5 pt-5" role="document">
+            <div class="modal-content">
+                <div class="modal-body px-5 text-center">
+                    <div class="head my-4 text-center">
+                        <img src="./static/img/modal_h4.svg">
+                        <br>
+                        <br>
+                        <span>Ссылка на задачу скопирована в буфер обмена</span>
+                    </div>
+                    <input onclick="copyPasteLink()" class='copy_link w-100 mb-4'>
+                </div>
+                <div onclick='hideModal("#modal_link")' class="close"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="auth" tabindex="-1" role="dialog" aria-labelledby="managerCopyPastLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="z-index: 2000; background-color: #31200b78">
+        <div class="modal-dialog mx-auto mt-5 pt-5" role="document" style='margin-top: 160px!important;'>
+            <div class="modal-content">
+                <div class="modal-body px-5 text-center">
+                    <div class="head2 auth_header my-4 text-center">
+                        <img src="./static/img/task_about.svg">
+                        <br>
+                        <br>
+                        <span class='active' name='auth'>Авторизация</span> <span name='reg'>Регистрация</span>
+                    </div>
+                    <div class='auth_content'>
+                        <div name='auth'>
+                            <input class='w-100' name='login' placeholder="логин (e-mail)">
+                            <input class='mt-4 w-100' name='pw' type='password' placeholder="пароль">
+                            <span class='forget_pw'>забыли пароль?</span>
+                            <br>
+                            <button class="my-3 mx-auto" type="button" onclick='getAuth()'>Войти</button>
+                        </div>
+                        <div class='my_hidden' name='reg'>
+                            <input class='w-100' name='fio' placeholder="Фамилия* Имя* Отчество">
+                            <select name='roles' class='mt-4 w-100'>
+                                <option value=''>Роль*</option>
+                            </select>
+                            <input class='mt-4 w-100' name='login' placeholder="логин* (e-mail)">
+                            <input class='mt-4 w-100' name='pw' type='password' placeholder="пароль*">
+                            <input class='mt-4 w-100' name='pw2' type='password' placeholder="повторите пароль*">
+                            <button class="my-4 mx-auto" type="button" onclick='getReg()'>Зарегистрироваться</button>
+                        </div>
+                        <div class='my_hidden' name='forget'>
+                            <input class='w-100' name='login' placeholder="логин (e-mail)">
+                            <button class="my-4 mx-auto" type="button" onclick='getPassword()'>Восстановить пароль</button>
+                        </div>
+                    </div>
+                </div>
+                <div onclick='goToCatalog()' class="close"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="errorModal" tabindex="1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true" style="z-index: 3001;">
+        <div class="modal-dialog mx-auto mt-5 pt-5" style='width: 30%;' role="document">
+            <div class="modal-content" style="margin-top: 50px;box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.35); border: 13px double #f00;">
+                <div class="head mt-4 text-center">
+                    <img class='mb-3' src="./static/img/alert.svg">
+                </div>
+                <div class="modal-body">
+                    <h5 class="mt-4 mb-3 text-center" id="errorModalMessage"></h5>
+                </div>
+                <div onclick='hideModal("#errorModal")' class="close"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id='my_div'>
+        <canvas id="radialgradient" width="5000" height="5000"></canvas>
+        <canvas class='canvas_layers' id="canvas1" width="5000" height="5000"></canvas>
+        <canvas class='canvas_layers' id="canvas2" width="5000" height="5000"></canvas>
+        <canvas class='canvas_layers' id="canvas3" width="5000" height="5000"></canvas>
+        <canvas class='canvas_layers' id="canvas4" width="5000" height="5000"></canvas>
+        <canvas class='canvas_layers' id="canvas5" width="5000" height="5000"></canvas>
+        <canvas class='canvas_layers' id="canvas6" width="5000" height="5000"></canvas>
+        <canvas class='canvas_layers' id="canvas7" width="5000" height="5000"></canvas>
+        <canvas class='canvas_layers' id="canvas8" width="5000" height="5000"></canvas>
+        <canvas class='canvas_layers' id="canvasTop" width="5000" height="5000"></canvas>
+    </div>
+
+    <div class="favor_link_buttons">
+        <img class="mr-3" onclick="showTaskLink()" title="скопировать ссылку на эту задачу" src="/./static/img/copy.svg">
+        <img onclick="toggleFavoriteTask()" class="favor gray_icon" title="добавить задачу в избранное" src="/./static/img/heart_2.svg">
+    </div>
+
+    <div class='zoom_buttons'>
+        <div id='zoom_in'></div>
+        <div id='zoom_out'></div>
+    </div>
+    <div class='cont'>
+        <img src='' id='my_img'>
+    </div>
+
+    <div class='grid_selector'>
+        <div name='2'><img class='mr-2' src="./static/img/construct_icons/grid_trangle.svg"> Треугольная</div>
+        <div name='1'><img class='mr-2' src="./static/img/construct_icons/grid_rectangle.svg"> Квадратная</div>
+        <div name='3'><img class='mr-2' src="./static/img/construct_icons/grid_hexagone.svg"> Гексагональная</div>
+    </div>
+
+    <div class='my_top'>
+        <div class="header d-flex">
+            <div class="my_menu col-9 px-0">
+                <a href="https://matclass.ru" target="new" style="text-decoration-line: none;margin-right: 25px;"><img src="./static/img/logo.svg" height="64px"></a><a href='/'>Каталог задач</a><a href='/tester.html'>Конструктор</a><a href='/my_tasks'>Мои задачи</a><a href='/favorites'>Избранное</a>
+            </div>
+            <div class="col-3 my-auto pr-4 text-right">
+                <img src="./static/img/user_logo.svg"><span id='user_fio' class='mx-2'>Авторизоваться</span><img src="./static/img/select_arrow.svg">
+            </div>
+        </div>
+
+        <div class="toolbar_resolver pb-3">
+
+            <div name='parts' class="d-flex" title="описание задачи">
+                <div class="m-auto text-center">
+                    <b>7</b>
+                    <br> Частей
+                </div>
+            </div>
+
+            <div class="separator"></div>
+
+            <div name='home' class="d-flex" title="выход в каталог задач">
+                <div class="m-auto text-center">
+                    <img src="./static/img/construct_icons/home.svg">
+                </div>
+            </div>
+            <div name='ready' class="d-flex d-none disabled" title="решив задачу, нажмите эту кнопку">
+                <div class="m-auto text-center">
+                    <img src="./static/img/construct_icons/check.svg">
+                    <br> Готово
+                </div>
+            </div>
+
+            <div class="separator"></div>
+            <div name='move' class="d-flex" title="передвинуть холст">
+                <div class="m-auto text-center">
+                    <img src="./static/img/construct_icons/move.svg">
+                    <br> Сдвиг
+                </div>
+            </div>
+            <div name='pen' class="d-flex active" title="чертить линии">
+                <div class="m-auto text-center">
+                    <img src="./static/img/construct_icons/cursor_pen.svg">
+                    <br> Карандаш
+                </div>
+            </div>
+            <div name='eraser' class="d-flex" title="стирать линии">
+                <div class="m-auto text-center">
+                    <img src="./static/img/construct_icons/eraser.svg">
+                    <br> Ластик
+                </div>
+            </div>
+            <div name='clear' class="d-flex disabled" title="очистить все линии">
+                <div class="m-auto text-center">
+                    <img src="./static/img/construct_icons/clean.svg">
+                    <br> Очистить
+                </div>
+            </div>
+
+            <div class="separator"></div>
+            <div name='undo' class="d-flex disabled" title="отменить последнее действие">
+                <div class="m-auto text-center">
+                    <img src="./static/img/construct_icons/undo.svg">
+                </div>
+            </div>
+            <div name='redo' class="d-flex disabled" title="повторить последнее отмененное действие">
+                <div class="m-auto text-center">
+                    <img src="./static/img/construct_icons/redo.svg">
+                </div>
+            </div>
+
+            <div name='tips' class="d-none disabled" title="нажмите эту кнопку, чтобы указать подсказку">
+                <div class="m-auto text-center">
+                    <img src="./static/img/construct_icons/box_tip3.svg">
+                    <br> Подсказки
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+<script>
+  var resolver = true;
+  var div = document.getElementById("my_div");
+  var canvas = document.getElementById("radialgradient");
+  var canvasTop = document.getElementById("canvasTop");
+  var canvas1 = document.getElementById("canvas1");
+  var canvas2 = document.getElementById("canvas2");
+  var canvas3 = document.getElementById("canvas3");
+  var canvas4 = document.getElementById("canvas4");
+  var canvas5 = document.getElementById("canvas5");
+  var canvas6 = document.getElementById("canvas6");
+  var canvas7 = document.getElementById("canvas7");
+  var canvas8 = document.getElementById("canvas8");
+  var menus = document.querySelectorAll('.my_menu>span');
+  var zoomIn = document.getElementById("zoom_in");
+  var zoomOut = document.getElementById("zoom_out");
+  let canvasInitWidth = 5000;
+  var zoom = 1;
+  let shift = 0.3;
+  let delta = 9;
+  var grid = 1; // тип сетки 1 - квадрат, 2 - треугольник, 3- гексагон
+  var gridColor = '#999';
+  var boldLineColor = '#333'; // '#333' '#5555ff'
+  var bgColor = '#f8f8f8'; //'#fcfcfc'; // '#eee'
+  var contur = {
+    x1: 100000,
+    x2: -100000,
+    y1: 100000,
+    y2: -100000,
+    i1: 100000,
+    j1: 100000,
+    i2: -100000,
+    j2: -100000,
+    cells: []
+  };
+
+  var shiftKey = false;
+  var ctrlKey = false;
+
+  canvas.style.width = zoom * canvasInitWidth;
+  canvasTop.style.width = canvas.style.width;
+  canvas1.style.width = canvas.style.width;
+  canvas2.style.width = canvas.style.width;
+  canvas3.style.width = canvas.style.width;
+  canvas4.style.width = canvas.style.width;
+  canvas5.style.width = canvas.style.width;
+  canvas6.style.width = canvas.style.width;
+  canvas7.style.width = canvas.style.width;
+  canvas8.style.width = canvas.style.width;
+
+  // при ходе, он записывается в массив steps, activeIndex увеличивается на 1
+  var steplogger = {
+    activeIndex: -1, // индекс последнего сделанного шага в массиве steps
+    steps: [] // состоит из объектов step, структура указана ниже
+  };
+  let step = {
+    i: 0, // coords of cell
+    j: 0,
+    lineName: 'l2' // name of line: l1, l2, l3, d1, d2
+  }
+
+  var cells = [];
+  var cellMouseOver = 0;
+  var cellWidth = 40;
+  var cW = 40;
+  var squard3 = 0.866;
+  let boldLine1 = 3;
+  let boldLine2 = 5;
+  var parts = 0;
+  var constructer_step = 1;
+  var pen = 1;
+
+  var context = canvas.getContext("2d");
+  var contextTop = canvasTop.getContext("2d");
+  var context1 = canvas1.getContext("2d");
+  var context2 = canvas2.getContext("2d");
+  var context3 = canvas3.getContext("2d");
+  var context4 = canvas4.getContext("2d");
+  var context5 = canvas5.getContext("2d");
+  var context6 = canvas6.getContext("2d");
+  var context7 = canvas7.getContext("2d");
+  var context8 = canvas8.getContext("2d");
+
+
+  function clearBolds() {
+    //	    context1.clearRect(0, 0, canvas.width, canvas.height);
+    //	    context2.clearRect(0, 0, canvas.width, canvas.height);
+    context3.clearRect(0, 0, canvas.width, canvas.height);
+    //	    context4.clearRect(0, 0, canvas.width, canvas.height);
+    //	    context5.clearRect(0, 0, canvas.width, canvas.height);
+    //	    context6.clearRect(0, 0, canvas.width, canvas.height);
+    //	    context7.clearRect(0, 0, canvas.width, canvas.height);
+    //	    context8.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // рисуем сетку подложки (ячейки из квадратов, треугольников, гексагон)
+  function addAllBoldLinesInCellToContur(cell) {
+    if (cell.l1.bold) {
+      if (cell.l1.cut)
+        cell.l1.bold = false;
+      else
+        conturAddLine(contur, cell.l1, cell);
+    }
+    if (cell.l2.bold) {
+      if (cell.l2.cut)
+        cell.l2.bold = false;
+      else
+        conturAddLine(contur, cell.l2, cell);
+    }
+    if (cell.l3 != undefined) {
+      if (cell.l3.bold) {
+        if (cell.l3.cut)
+          cell.l3.bold = false;
+        else
+          conturAddLine(contur, cell.l3, cell);
+      }
+    } else {
+      if (cell.d1.bold) {
+        if (cell.d1.cut)
+          cell.d1.bold = false;
+        else
+          conturAddLine(contur, cell.d1, cell);
+      }
+      if (cell.d2.bold) {
+        if (cell.d2.cut)
+          cell.d2.bold = false;
+        else
+          conturAddLine(contur, cell.d2, cell);
+      }
+    }
+  }
+
+  function drawGrid(task_cells) {
+
+    if (cells.length)
+      eraseAllFigures();
+
+    context.fillStyle = bgColor;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.beginPath();
+
+    context.strokeStyle = gridColor;
+    context.lineWidth = 1;
+
+    cells = [];
+
+    for (var i = 0; i < parseInt(canvas.width / cellWidth); i++) {
+      cells.push([])
+
+      for (var j = 0; j < parseInt(canvas.width / cellWidth); j++) {
+        let free_cell = true;
+        for (let cell_i = 0; cell_i < task_cells.length; cell_i++) {
+          if (task_cells[cell_i].i == i && task_cells[cell_i].j == j) {
+            cells[i].push(task_cells[cell_i]);
+            addAllBoldLinesInCellToContur(cells[i][j]);
+            free_cell = false;
+
+            break;
+          }
+        }
+        if (free_cell) {
+          var cell = new Object();
+          var leftShift;
+          if (grid == 1) {
+            cell = {
+              i: i,
+              j: j,
+              l1: { // horizontal
+                x1: (i - shift) * cW,
+                y1: (j - shift) * cW,
+                x2: (i + 1 - shift) * cW,
+                y2: (j - shift) * cW,
+                //			    		layer: 1 + i%2,
+                bold: false,
+                cut: false,
+                mouseOver: false
+              },
+              l2: { // vertical
+                x1: (i - shift) * cW,
+                y1: (j - shift) * cW,
+                x2: (i - shift) * cW,
+                y2: (j + 1 - shift) * cW,
+                //			    		layer: 3 + j%2,
+                bold: false,
+                cut: false,
+                mouseOver: false
+              },
+              d1: {
+                x1: (i - shift) * cW,
+                y1: (j - shift) * cW,
+                x2: (i + 1 - shift) * cW,
+                y2: (j + 1 - shift) * cW,
+                //			    		layer: 5 + i%2,
+                bold: false,
+                cut: false,
+                mouseOver: false
+              },
+              d2: {
+                x1: (i - shift) * cW,
+                y1: (j + 1 - shift) * cW,
+                x2: (i + 1 - shift) * cW,
+                y2: (j - shift) * cW,
+                //			    		layer: 7 + j%2,
+                bold: false,
+                cut: false,
+                mouseOver: false
+              }
+            };
+          } else if (grid == 2) {
+            if (j % 2)
+              leftShift = 0.5;
+            else
+              leftShift = 0;
+            cell = {
+              i: i,
+              j: j,
+              l1: {
+                x1: (i - leftShift - shift) * cW,
+                y1: (j - shift) * cW * squard3,
+                x2: (i + 1 - leftShift - shift) * cW,
+                y2: (j - shift) * cW * squard3,
+                //			    		layer: 1 + i%2,
+                bold: false,
+                cut: false,
+                mouseOver: false
+              },
+              l2: {
+                x1: (i - leftShift - shift) * cW,
+                y1: (j - shift) * cW * squard3,
+                x2: (i + 0.5 - leftShift - shift) * cW,
+                y2: (j + 1 - shift) * cW * squard3,
+                //			    		layer: 3 + j%2,
+                bold: false,
+                cut: false,
+                mouseOver: false
+              },
+              l3: {
+                x1: (i + 0.5 - leftShift - shift) * cW,
+                y1: (j + 1 - shift) * cW * squard3,
+                x2: (i + 1 - leftShift - shift) * cW,
+                y2: (j - shift) * cW * squard3,
+                //			    		layer: 5 + j%2,
+                bold: false,
+                cut: false,
+                mouseOver: false
+              },
+            };
+          } else if (grid == 3) {
+            if (j % 2)
+              leftShift = squard3;
+            else
+              leftShift = 0;
+            cell = {
+              i: i,
+              j: j,
+              l1: {
+                x1: (i * 2 * squard3 - leftShift - shift) * cW,
+                y1: (j * 1.5 + 0.5 - shift) * cW,
+                x2: (i * 2 * squard3 - leftShift - shift) * cW,
+                y2: (j * 1.5 + 1.5 - shift) * cW,
+                //			    		layer: 1,
+                bold: false,
+                cut: false,
+                mouseOver: false
+              },
+              l2: {
+                x1: (i * 2 * squard3 - leftShift - shift) * cW,
+                y1: (j * 1.5 + 0.5 - shift) * cW,
+                x2: (i * 2 * squard3 + squard3 - leftShift - shift) * cW,
+                y2: (j * 1.5 - shift) * cW,
+                //			    		layer: 2,
+                bold: false,
+                cut: false,
+                mouseOver: false
+              },
+              l3: {
+                x1: (i * 2 * squard3 + squard3 - leftShift - shift) * cW,
+                y1: (j * 1.5 - shift) * cW,
+                x2: (i * 2 * squard3 + 2 * squard3 - leftShift - shift) * cW,
+                y2: (j * 1.5 + 0.5 - shift) * cW,
+                //			    		layer: 3,
+                bold: false,
+                cut: false,
+                mouseOver: false
+              },
+            };
+          }
+          cells[i].push(cell);
+        }
+
+
+        context.moveTo(cells[i][j].l1.x1, cells[i][j].l1.y1);
+        context.lineTo(cells[i][j].l1.x2, cells[i][j].l1.y2);
+        context.moveTo(cells[i][j].l2.x1, cells[i][j].l2.y1);
+        context.lineTo(cells[i][j].l2.x2, cells[i][j].l2.y2);
+        if (cells[i][j].l3 != undefined) {
+          context.moveTo(cells[i][j].l3.x1, cells[i][j].l3.y1);
+          context.lineTo(cells[i][j].l3.x2, cells[i][j].l3.y2);
+        }
+
+      }
+    }
+    cellMouseOver = cells[parseInt(canvas.width / cellWidth) - 1][parseInt(canvas.width / cellWidth) - 1];
+    context.stroke();
+    context.closePath();
+    contur_start = deepCloneObject(contur);
+    conturRedraw();
+
+    /*
+    // ball
+      context2.shadowOffsetX = 1;
+      context2.shadowOffsetY = 2;
+      context2.shadowBlur = 10;
+      context2.shadowColor = '#0F0';
+
+      var gradient = context.createRadialGradient(12, 140, 5, 19, 147, 15);
+      gradient.addColorStop(0.0, '#0F0');
+      gradient.addColorStop(1.0, '#0DA805');
+
+      context2.fillStyle = gradient;
+
+      context2.beginPath();
+
+
+      context2.arc(25, 153, 20, 0, Math.PI * 2, false);
+      context2.fill();
+
+      context2.shadowOffsetX = 0;
+      context2.shadowOffsetY = 0;
+      context2.shadowBlur = 0;
+
+      context.closePath();
+      */
+  }
+
+  function clearBoldLinesFromGrid() {
+    for (var i = 0; i < parseInt(canvas.width / cellWidth); i++) {
+      for (var j = 0; j < parseInt(canvas.width / cellWidth); j++) {
+        cells[i][j].l1.bold = false;
+        cells[i][j].l2.bold = false;
+        if (cells[i][j].l3 != undefined)
+          cells[i][j].l3.bold = false;
+        else if (cells[i][j].d1 != undefined) {
+          cells[i][j].d1.bold = false;
+          cells[i][j].d2.bold = false;
+        }
+      }
+    }
+  }
+
+  //drawGrid();
+
+  canvasTop.addEventListener('mouseup', {
+    handleEvent(event) {
+      if (pen) {
+        if (event.shiftKey)
+          shiftKey = true;
+        else
+          shiftKey = false;
+        if (event.ctrlKey)
+          ctrlKey = true;
+        else
+          ctrlKey = false;
+        // ищем линию ячейки над которой мышь
+        if (cellMouseOver.l1.mouseOver)
+          clickCell(cellMouseOver.l1, 'l1');
+        else if (cellMouseOver.l2.mouseOver)
+          clickCell(cellMouseOver.l2, 'l2');
+        else if (cellMouseOver.d1 != undefined) {
+          if (cellMouseOver.d1.mouseOver)
+            clickCell(cellMouseOver.d1, 'd1');
+          else if (cellMouseOver.d2.mouseOver)
+            clickCell(cellMouseOver.d2, 'd2');
+        } else if (cellMouseOver.l3 != undefined && cellMouseOver.l3.mouseOver)
+          clickCell(cellMouseOver.l3, 'l3');
+        return false;
+      }
+    }
+  });
+
+  function conturDeleteLine(line) {
+    let conturRes = {
+      x1: 100000,
+      x2: -100000,
+      y1: 100000,
+      y2: -100000,
+      i1: 100000,
+      j1: 100000,
+      i2: -100000,
+      j2: -100000,
+      cells: []
+    };
+    for (let i = 0; i < contur.cells.length; i++)
+      if (contur.cells[i].line.x1 != line.x1 || contur.cells[i].line.x2 != line.x2 ||
+        contur.cells[i].line.y1 != line.y1 || contur.cells[i].line.y2 != line.y2)
+        conturAddLine(conturRes, contur.cells[i].line, contur.cells[i]);
+
+    contur = conturRes;
+  }
+
+  function conturAddLine(conturN, line, cellRef) {
+    let cell = {
+      i: cellRef.i,
+      j: cellRef.j,
+      line: line
+    };
+    conturN.cells.push(cell);
+    let x1, x2, y1, y2;
+    if (line.x1 > line.x2) {
+      x1 = line.x2;
+      x2 = line.x1;
+    } else {
+      x1 = line.x1;
+      x2 = line.x2;
+    }
+    if (line.y1 > line.y2) {
+      y1 = line.y2;
+      y2 = line.y1;
+    } else {
+      y1 = line.y1;
+      y2 = line.y2;
+    }
+    if (conturN.x1 > x1)
+      conturN.x1 = x1;
+    if (conturN.x2 < x2)
+      conturN.x2 = x2;
+    if (conturN.y1 > y1)
+      conturN.y1 = y1;
+    if (conturN.y2 < y2)
+      conturN.y2 = y2;
+
+    if (conturN.i1 > cell.i)
+      conturN.i1 = cell.i;
+    if (conturN.i2 < cell.i)
+      conturN.i2 = cell.i;
+    if (conturN.j1 > cell.j)
+      conturN.j1 = cell.j;
+    if (conturN.j2 < cell.j)
+      conturN.j2 = cell.j;
+  }
+
+  function conturRedraw() {
+    context5.clearRect(contur.x1 - 3, contur.y1 - 3, contur.x2 - contur.x1 + 6, contur.y2 - contur.y1 + 6);
+    for (let i = 0; i < contur.cells.length; i++)
+      drawline(context5, contur.cells[i].line, boldLine2);
+  }
+
+  function clickCell(line, lineName) {
+    if ((line.bold && pen != 2) || (!line.bold && pen != 1)) {
+      return false;
+    }
+    let step = {
+      i: cellMouseOver.i, // coords of cell
+      j: cellMouseOver.j,
+      lineName: lineName, // name of line: l1, l2, l3, d1, d2
+      step: constructer_step
+    };
+
+    if (line.bold) {
+      step.bold = false;
+      context3.clearRect(contur.x1 - 3, contur.y1 - 3, contur.x2 - contur.x1 + 6, contur.y2 - contur.y1 + 6);
+      conturDeleteLine(line);
+      for (let i = 0; i < contur.cells.length; i++)
+        drawline(context3, contur.cells[i].line, boldLine1);
+    } else {
+      drawline(context3, line, boldLine1);
+      conturAddLine(contur, line, cellMouseOver);
+    }
+    line.bold = !line.bold;
+
+    steplogger.activeIndex++;
+    while (steplogger.activeIndex < steplogger.steps.length) {
+      steplogger.steps.pop();
+    }
+    steplogger.steps.push(step);
+    $('.toolbar_resolver>div').removeClass('disabled');
+    $('.toolbar_resolver>div[name=redo]').addClass('disabled');
+    clearSets();
+  }
+
+  function drawline(context, line, lineWidth, innerLines) {
+    context.beginPath();
+    context.lineCap = 'round';
+    context.lineWidth = lineWidth;
+    if (innerLines) {
+      context.strokeStyle = '#00a000';
+      context.lineWidth = 1;
+    } else if (ctrlKey) {
+      context.strokeStyle = '#00a000';
+      //		    context.lineWidth = 1;
+    } else if (shiftKey) {
+      context.strokeStyle = '#a00000';
+      //		    context.lineWidth = 1;
+    } else {
+      context.strokeStyle = boldLineColor;
+    }
+    context.moveTo(line.x1, line.y1);
+    context.lineTo(line.x2, line.y2);
+    context.stroke();
+    context.closePath();
+  }
+
+  function mouseOut() {
+    cellMouseOver.l1.mouseOver = false;
+    cellMouseOver.l2.mouseOver = false;
+    if (cellMouseOver.l3 != undefined)
+      cellMouseOver.l3.mouseOver = false;
+    if (cellMouseOver.d1 != undefined) {
+      cellMouseOver.d1.mouseOver = false;
+      cellMouseOver.d2.mouseOver = false;
+    }
+  }
+
+  function clearMouseOverLine() {
+    if (grid == 3)
+      contextTop.clearRect(cellMouseOver.l1.x1 - 2, cellMouseOver.l1.y1 - 0.5 * cW - 2, cW * 2 * squard3 + 4, cW * 1.5 + 4);
+    else
+      contextTop.clearRect(cellMouseOver.l1.x1 - 2, cellMouseOver.l1.y1 - 2, cW + 4, cW + 4);
+  }
+
+  function drawMouseOver(line) {
+    // убираем старую подсветку
+    clearMouseOverLine();
+    if ((line.bold && pen != 2) || (!line.bold && pen != 1)) {
+      return false;
+    }
+
+    // подсвечиваем линию над которой мышь
+    contextTop.beginPath();
+    let boldLineColor = '#FFC424'
+
+    contextTop.strokeStyle = '#3CB3FF'; // '#79BFEC';
+    contextTop.lineWidth = 1;
+    //		if(line.cut) {
+    if (line.bold) {
+      contextTop.strokeStyle = boldLineColor;
+      contextTop.lineWidth = boldLine1;
+      //		  		div.style.cursor = 'url("./static/img/construct_icons/eraser.svg") 6 30, default';
+    } // else
+    //div.style.cursor = 'url("./static/img/construct_icons/cursor_pen.svg") 6 30, default';
+    /*   	} else if(line.bold) {
+        contextTop.strokeStyle = boldLineColor;
+          contextTop.lineWidth = boldLine1;
+          div.style.cursor = 'url("./static/img/construct_icons/eraser.svg") 6 30, default';
+        } else
+          div.style.cursor = 'url("./static/img/construct_icons/cursor_pen.svg") 6 30, default';
+          */
+    contextTop.moveTo(line.x1, line.y1);
+    contextTop.lineTo(line.x2, line.y2);
+    contextTop.stroke();
+    contextTop.closePath();
+  }
+
+  canvasTop.addEventListener('mouseout', {
+    handleEvent(event) {
+      mouseOut();
+      contextTop.clearRect(0, 0, canvasTop.width, canvasTop.height);
+    }
+  });
+
+  canvasTop.addEventListener('mousemove', {
+    handleEvent(event) {
+      if (pen) {
+        let i;
+        let j;
+
+        switch (grid) {
+          case 1: // квадрат
+            i = parseInt(zoom * event.offsetX / cW + shift);
+            j = parseInt(zoom * event.offsetY / cW + shift);
+            break;
+          case 2: // треугольник
+            j = parseInt(zoom * event.offsetY / (cW * squard3) + shift);
+            i = parseInt(zoom * event.offsetX / cW + shift);
+            if (j % 2)
+              i = parseInt((zoom * event.offsetX + cW * 0.5) / cW + shift);
+            break;
+          case 3: // гексагон
+            i = parseInt(zoom * event.offsetX / (cW * 2 * squard3) + shift / (2 * squard3));
+            j = parseInt(zoom * event.offsetY / (cW * 1.5) + shift * 2 / 3);
+            if (j % 2)
+              i = parseInt((zoom * event.offsetX + cW * squard3) / (cW * 2 * squard3) + shift / (2 * squard3));
+            break;
+        }
+
+        if (cellMouseOver.i != i || cellMouseOver.j != j) {
+          //console.log('contur of cell: i='+i+', j='+j);
+          mouseOut();
+          clearMouseOverLine();
+          cellMouseOver = cells[i][j];
+        }
+
+        // ищем линию ячейки, над которой мышь
+        switch (grid) {
+          case 1: // квадрат
+            if (zoom * event.offsetX < (i - shift) * cW + delta) {
+              if (!cellMouseOver.l2.mouseOver)
+                showMouseOverLine(cellMouseOver.l2);
+            } else if (zoom * event.offsetY < (j - shift) * cW + delta) {
+              if (!cellMouseOver.l1.mouseOver)
+                showMouseOverLine(cellMouseOver.l1);
+            } else if ((zoom * event.offsetX < (i + 0.5 - shift) * cW && zoom * event.offsetY < (j + 0.5 - shift) * cW) || (zoom * event.offsetX > (i + 0.5 - shift) * cW && zoom * event.offsetY > (j + 0.5 - shift) * cW)) {
+              if (!cellMouseOver.d1.mouseOver)
+                showMouseOverLine(cellMouseOver.d1);
+            } else {
+              if (!cellMouseOver.d2.mouseOver)
+                showMouseOverLine(cellMouseOver.d2);
+            }
+            break;
+          case 2: // треугольник
+            if (zoom * event.offsetY < (j - shift) * cW * squard3 + delta) {
+              if (!cellMouseOver.l1.mouseOver)
+                showMouseOverLine(cellMouseOver.l1);
+            } else if (j % 2) {
+              if (zoom * event.offsetX < (i - shift) * cW) {
+                if (!cellMouseOver.l2.mouseOver)
+                  showMouseOverLine(cellMouseOver.l2);
+              } else {
+                if (!cellMouseOver.l3.mouseOver)
+                  showMouseOverLine(cellMouseOver.l3);
+              }
+            } else {
+              if (zoom * event.offsetX < (i + 0.5 - shift) * cW) {
+                if (!cellMouseOver.l2.mouseOver)
+                  showMouseOverLine(cellMouseOver.l2);
+              } else {
+                if (!cellMouseOver.l3.mouseOver)
+                  showMouseOverLine(cellMouseOver.l3);
+              }
+            }
+            break;
+          case 3: // гексагон
+            if (zoom * event.offsetY > (j - shift) * 1.5 * cW + 0.5 * cW + delta) {
+              let delt = 2 * delta;
+              if (j % 2)
+                delt -= cW * squard3;
+              if (zoom * event.offsetX < (i - shift) * cW * 2 * squard3 + delt) {
+                if (!cellMouseOver.l1.mouseOver)
+                  showMouseOverLine(cellMouseOver.l1);
+              } else if (cellMouseOver.l1.mouseOver ||
+                cellMouseOver.l2.mouseOver ||
+                cellMouseOver.l3.mouseOver) {
+                mouseOut();
+                clearMouseOverLine();
+              }
+            } else if (j % 2) {
+              if (zoom * event.offsetX < (i - shift) * cW * 2 * squard3 + delta) {
+                if (!cellMouseOver.l2.mouseOver)
+                  showMouseOverLine(cellMouseOver.l2);
+              } else if (!cellMouseOver.l3.mouseOver)
+                showMouseOverLine(cellMouseOver.l3);
+            } else {
+              if (zoom * event.offsetX < (i + 0.5 - shift) * cW * 2 * squard3 + delta) {
+                if (!cellMouseOver.l2.mouseOver)
+                  showMouseOverLine(cellMouseOver.l2);
+              } else if (!cellMouseOver.l3.mouseOver)
+                showMouseOverLine(cellMouseOver.l3);
+            }
+            break;
+        }
+      }
+    }
+  });
+
+  function showMouseOverLine(line) {
+    mouseOut();
+    if (!parts || line.cut) {
+      line.mouseOver = true;
+      // подсвечиваем линию над которой мышь
+      drawMouseOver(line);
+    } //  else
+    //	  		div.style.cursor = 'url() 0 0, default';
+  }
+
+  var mouseDown = {
+    x: 0,
+    y: 0,
+    pressed: false,
+    moved: false
+  };
+  canvas.style.marginLeft = 0;
+  canvas.style.marginTop = 0;
+  div.style.cursor = 'url("./static/img/construct_icons/pencil_cursor.svg") 6 6, default';
+
+  div.addEventListener('mousemove', {
+    handleEvent(event) {
+      if (pen == 0 && mouseDown.pressed) {
+        canvas.style.marginTop = event.screenY - mouseDown.y;
+        canvas.style.marginLeft = event.screenX - mouseDown.x;
+        canvasTop.style.marginTop = canvas.style.marginTop;
+        canvasTop.style.marginLeft = canvas.style.marginLeft;
+        canvas1.style.marginTop = canvas.style.marginTop;
+        canvas1.style.marginLeft = canvas.style.marginLeft;
+        canvas2.style.marginTop = canvas.style.marginTop;
+        canvas2.style.marginLeft = canvas.style.marginLeft;
+        canvas3.style.marginTop = canvas.style.marginTop;
+        canvas3.style.marginLeft = canvas.style.marginLeft;
+        canvas4.style.marginTop = canvas.style.marginTop;
+        canvas4.style.marginLeft = canvas.style.marginLeft;
+        canvas5.style.marginTop = canvas.style.marginTop;
+        canvas5.style.marginLeft = canvas.style.marginLeft;
+        canvas6.style.marginTop = canvas.style.marginTop;
+        canvas6.style.marginLeft = canvas.style.marginLeft;
+        canvas7.style.marginTop = canvas.style.marginTop;
+        canvas7.style.marginLeft = canvas.style.marginLeft;
+        canvas8.style.marginTop = canvas.style.marginTop;
+        canvas8.style.marginLeft = canvas.style.marginLeft;
+      }
+    }
+  });
+
+  div.addEventListener('mousedown', {
+    handleEvent(event) {
+      if (pen == 0) {
+        mouseDown.pressed = true;
+        div.style.cursor = 'move';
+        mouseDown.x = event.screenX - parseInt(canvas.style.marginLeft);
+        mouseDown.y = event.screenY - parseInt(canvas.style.marginTop);
+      }
+    }
+  });
+  div.addEventListener('mouseup', {
+    handleEvent(event) {
+      if (pen == 0) {
+        mouseDown.pressed = false;
+        div.style.cursor = 'pointer';
+        if (parseInt(canvas.style.marginTop) > 0) {
+          canvas.style.marginTop = 0;
+          canvasTop.style.marginTop = 0;
+          canvas1.style.marginTop = 0;
+          canvas2.style.marginTop = 0;
+          canvas3.style.marginTop = 0;
+          canvas4.style.marginTop = 0;
+          canvas5.style.marginTop = 0;
+          canvas6.style.marginTop = 0;
+          canvas7.style.marginTop = 0;
+          canvas8.style.marginTop = 0;
+        }
+        if (parseInt(canvas.style.marginLeft) > 0) {
+          canvas.style.marginLeft = 0;
+          canvasTop.style.marginLeft = 0;
+          canvas1.style.marginLeft = 0;
+          canvas2.style.marginLeft = 0;
+          canvas3.style.marginLeft = 0;
+          canvas4.style.marginLeft = 0;
+          canvas5.style.marginLeft = 0;
+          canvas6.style.marginLeft = 0;
+          canvas7.style.marginLeft = 0;
+          canvas8.style.marginLeft = 0;
+        }
+      }
+    }
+  });
+
+  for (let menu of menus) {
+    menu.addEventListener('click', {
+      handleEvent(event) {
+        //if()
+        myAlert('работаем');
+      }
+    });
+  }
+
+  zoomIn.addEventListener('click', {
+    handleEvent(event) {
+      if (parseInt(canvas.style.width) < 10000) {
+        canvas.style.width = parseInt(canvas.style.width) + 500;
+        canvasTop.style.width = canvas.style.width;
+        canvas1.style.width = canvas.style.width;
+        canvas2.style.width = canvas.style.width;
+        canvas3.style.width = canvas.style.width;
+        canvas4.style.width = canvas.style.width;
+        canvas5.style.width = canvas.style.width;
+        canvas6.style.width = canvas.style.width;
+        canvas7.style.width = canvas.style.width;
+        canvas8.style.width = canvas.style.width;
+        zoom = canvasInitWidth / parseInt(canvas.style.width);
+      }
+    }
+  });
+  zoomOut.addEventListener('click', {
+    handleEvent(event) {
+      if (parseInt(canvas.style.width) > 2000) {
+        canvas.style.width = parseInt(canvas.style.width) - 500;
+        canvasTop.style.width = canvas.style.width;
+        canvas1.style.width = canvas.style.width;
+        canvas2.style.width = canvas.style.width;
+        canvas3.style.width = canvas.style.width;
+        canvas4.style.width = canvas.style.width;
+        canvas5.style.width = canvas.style.width;
+        canvas6.style.width = canvas.style.width;
+        canvas7.style.width = canvas.style.width;
+        canvas8.style.width = canvas.style.width;
+        zoom = canvasInitWidth / parseInt(canvas.style.width);
+      }
+    }
+  });
+
+  function togglePen() {
+    let penEl = $('.toolbar_resolver>div[name=pen]');
+    if (pen == 1) {
+      penEl.addClass('active');
+      penEl.prev().removeClass('active');
+      penEl.next().removeClass('active');
+      div.style.cursor = 'url("./static/img/construct_icons/pencil_cursor.svg") 6 6, default';
+    } else if (pen == 2) {
+      penEl.removeClass('active');
+      penEl.prev().removeClass('active');
+      penEl.next().addClass('active');
+      div.style.cursor = 'url("./static/img/construct_icons/eraser_cursor.svg") 6 6, default';
+    } else {
+      penEl.removeClass('active');
+      penEl.prev().addClass('active');
+      penEl.next().removeClass('active');
+      div.style.cursor = 'pointer';
+    }
+  }
+
+  $('.grid_selector:first').on('mouseleave', function() {
+    $('.grid_selector:first').css('display', 'none');
+  });
+
+  $('.toolbar_resolver>div').on('click', function() {
+    if (!$(this).hasClass('disabled')) {
+      switch ($(this).attr('name')) {
+        case 'parts':
+          showTaskModal('#taskAboutModal');
+          break;
+        case 'home':
+          location.href = '/';
+          break;
+        case 'undo':
+          stepLogger('undo');
+          clearSets();
+          break;
+        case 'redo':
+          stepLogger('');
+          break;
+        case 'save':
+          showSaveModal();
+          break;
+        case 'move':
+          pen = 0;
+          togglePen();
+          break;
+        case 'pen':
+          pen = 1;
+          togglePen();
+          break;
+        case 'eraser':
+          pen = 2;
+          togglePen();
+          break;
+        case 'clear':
+          freeInnerLines();
+          //					drawAllInlines();
+          eraseAllFigures();
+          //					context3.clearRect(0, 0, 5000, 5000);
+          //					changeToolButton();
+          clearSets();
+          pen = 1;
+          togglePen();
+          break;
+        case 'grid':
+          showGridSelector();
+          break;
+        case 'resolve':
+          showModalCut();
+          break;
+        case 'ready':
+          //showSaveModal();
+          checkTaskSol();
+          break;
+        case 'tips':
+          myAlert('работаем');
+          constructer_step = 3;
+          changeToolButton();
+          break;
+      }
+    }
+  });
+
+  function freeInnerLines() {
+    for (let j = 0; j < 125; j++) {
+      for (let i = 0; i < 125; i++) {
+        if (cells[i][j].l1.cut)
+          cells[i][j].l1.bold = false;
+        if (cells[i][j].l2.cut)
+          cells[i][j].l2.bold = false;
+        if (cells[i][j].l3 != undefined) {
+          if (cells[i][j].l3.cut)
+            cells[i][j].l3.bold = false;
+        } else {
+          if (cells[i][j].d1.cut)
+            cells[i][j].d1.bold = false;
+          if (cells[i][j].d2.cut)
+            cells[i][j].d2.bold = false;
+        }
+      }
+    }
+  }
+
+  var innerLines;
+  var figureReady = false;
+
+  var grid_new;
+  $('.grid_selector>div').on('click', function() {
+    grid_new = parseInt($(this).attr('name'));
+    if (contur.cells.length && grid_new != grid) {
+      $('#modal_grid_select_confirm').modal('show');
+    } else if (grid_new != grid) {
+      selectMyGrid();
+    }
+    $('.grid_selector:first').css('display', 'none');
+  });
+
+  function selectMyGrid(task_cells) {
+    $('#modal_grid_select_confirm').modal('hide');
+    // очищаем линии разрезов внутри фигуры
+    //    	clearSets();
+    //		freeInnerLines();
+    //		drawAllInlines();
+    //		context5.clearRect(0, 0, 5000, 5000);
+    grid = grid_new;
+    constructer_step = 1;
+    //		changeToolButton();
+
+    switch (grid) {
+      case 1:
+        cW = 40;
+        break;
+      case 2:
+        cW = 46;
+        break;
+      case 3:
+        cW = 32;
+        break;
+    }
+    drawGrid(task_cells);
+  }
+
+  function showGridSelector() {
+    if ($('.grid_selector:first').css('display') == 'block')
+      $('.grid_selector:first').css('display', 'none');
+    else
+      $('.grid_selector:first').css('display', 'block');
+  }
+
+  function showSaveModal() {
+    $('#my_modal').modal('show');
+    /*	    var img = document.getElementById("my_img");
+
+          var dataURL = canvas3.toDataURL();
+          img.src = dataURL;
+    */
+  }
+
+  function showModalCut() {
+    $('#modal_cut').modal('show');
+  }
+
+  $('#modal_cut input:first').on('keypress', function() {
+    resetError($(this))
+  });
+
+  function resetError(el) {
+    if (el.hasClass('error_input')) {
+      el.removeClass('error_input');
+      el.next().html('');
+    }
+  }
+
+  function getStringFigureCells(resolve_flag) {
+    let res = [];
+    for (let i = contur.i1; i < contur.i2 + 1; i++) {
+      for (let j = contur.j1; j < contur.j2 + 1; j++) {
+        res.push(cells[i][j]);
+        /*  		  		if(resolve_flag) {
+                      if(cells[i][j].l1.bold && cells[i][j].l1.cut)
+                        res[res.length-1].l1.bold = false;
+                      if(cells[i][j].l2.bold && cells[i][j].l2.cut)
+                        res[res.length-1].l2.bold = false;
+                      if(cells[i][j].l3 != undefined && cells[i][j].l3.bold && cells[i][j].l3.cut)
+                        res[res.length-1].l3.bold = false;
+                      if(cells[i][j].d1 != undefined && cells[i][j].d1.bold && cells[i][j].d1.cut)
+                        res[res.length-1].d1.bold = false;
+                      if(cells[i][j].d2 != undefined && cells[i][j].d2.bold && cells[i][j].d2.cut)
+                        res[res.length-1].d2.bold = false;
+                    }
+                    */
+      }
+    }
+    return JSON.stringify(res);
+  }
+
+  function figureCellsParseFromString(str) {
+    let str_cells = JSON.parse(str);
+    return str_cells;
+  }
+
+  function changeToolButton() {
+    let cut_button = $('.toolbar_resolver>div[name=resolve]');
+    cut_button.removeClass('d-flex');
+    cut_button.next().removeClass('d-flex');
+    cut_button.next().next().removeClass('d-flex');
+    switch (constructer_step) {
+      case 1:
+        cut_button.addClass('d-flex');
+        break;
+      case 2:
+        cut_button.next().addClass('d-flex');
+        break;
+      case 3:
+        cut_button.next().next().addClass('d-flex');
+        break;
+    }
+  }
+
+  function hideModal(modal_id) {
+    $(modal_id).modal('hide');
+  }
+
+  function hideModal2() {
+    if (user_auth)
+      $('#congratulationModal').modal('hide');
+    else
+      $('#auth').modal('show');
+  }
+
+  function deepCloneObject(obj) { // функция глубокого клонирования объекта
+    let clone = {}; // новый пустой объект
+    // скопируем в него все свойства obj
+    for (let key in obj)
+      if ('object' === typeof obj[key]) {
+        if (Array.isArray(obj[key])) {
+          clone[key] = [];
+          for (let i = 0; i < obj[key].length; i++) {
+            if ('object' === typeof obj[key][i])
+              clone[key].push(deepCloneObject(obj[key][i]));
+            else
+              clone[key].push(obj[key][i]);
+          }
+        } else
+          clone[key] = deepCloneObject(obj[key]);
+      } else
+        clone[key] = obj[key];
+    return clone;
+  }
+
+  function eraseAllFigures() {
+    context3.clearRect(contur.x1 - 3, contur.y1 - 3, contur.x2 - contur.x1 + 6, contur.y2 - contur.y1 + 6);
+    contur = deepCloneObject(contur_start);
+    //	    clearBoldLinesFromGrid();
+    // очищаем стэплогер
+    steplogger = {
+      activeIndex: -1,
+      steps: []
+    };
+    // переводим кнопки тулбара в состояние отключки
+    initDisableToolbarButtons()
+  }
+
+  function initDisableToolbarButtons() {
+    $('.toolbar_resolver>div').addClass('disabled');
+    $('.toolbar_resolver>div[name=home]').removeClass('disabled');
+    $('.toolbar_resolver>div[name=parts]').removeClass('disabled');
+    $('.toolbar_resolver>div[name=move]').removeClass('disabled');
+    $('.toolbar_resolver>div[name=pen]').removeClass('disabled');
+  }
+
+  var old_parts = 0;
+
+  function stepLogger(direction) {
+    let cell;
+    let line, lineName;
+    //    	let step_old = steplogger.steps[steplogger.activeIndex].step;
+    if (direction == 'undo') { // шаг назад
+      cell = cells[steplogger.steps[steplogger.activeIndex].i][steplogger.steps[steplogger.activeIndex].j];
+      lineName = steplogger.steps[steplogger.activeIndex].lineName;
+      steplogger.activeIndex--;
+      if (steplogger.activeIndex < 0)
+        initDisableToolbarButtons();
+      $('.toolbar_resolver>div[name=redo]').removeClass('disabled');
+    } else { // шаг вперед
+      steplogger.activeIndex++;
+      $('.toolbar_resolver>div').removeClass('disabled');
+      if (steplogger.activeIndex > steplogger.steps.length - 2)
+        $('.toolbar_resolver>div[name=redo]').addClass('disabled');
+      cell = cells[steplogger.steps[steplogger.activeIndex].i][steplogger.steps[steplogger.activeIndex].j];
+      lineName = steplogger.steps[steplogger.activeIndex].lineName;
+    }
+
+    switch (lineName) {
+      case 'l1':
+        line = cell.l1;
+        break;
+      case 'l2':
+        line = cell.l2;
+        break;
+      case 'l3':
+        line = cell.l3;
+        break;
+      case 'd1':
+        line = cell.d1;
+        break;
+      case 'd2':
+        line = cell.d2;
+        break;
+    }
+
+    if (line.bold) {
+      context3.clearRect(contur.x1 - 3, contur.y1 - 3, contur.x2 - contur.x1 + 6, contur.y2 - contur.y1 + 6);
+      conturDeleteLine(line);
+      for (let i = 0; i < contur.cells.length; i++)
+        drawline(context3, contur.cells[i].line, boldLine1);
+    } else {
+      drawline(context3, line, boldLine1);
+      conturAddLine(contur, line, cell);
+    }
+    line.bold = !line.bold;
+  }
+
+  var task = 0;
+
+  function initTask(resp_task) {
+    task = resp_task;
+    task.figure_cells = JSON.parse(task.figure_cells);
+    grid_new = task.grid;
+    parts = task.parts;
+    initPartButton();
+    selectMyGrid(task.figure_cells);
+    $('#taskAboutMessage').html('Разрежьте фигуру на ' + partsStr());
+    showTaskModal('#taskAboutModal');
+  }
+
+  function showTaskModal(modal_name) {
+    if (modal_name == '#congratulationModal') {
+      ajaxSuccessTaskResolved();
+      if (user_auth)
+        $('#congratulationModal button').html('Закрыть');
+      else
+        $('#congratulationModal button').html('Авторизоваться');
+    }
+    $(modal_name).modal('show');
+  }
+
+  function partsStr() {
+    let str = parts;
+    if (parts < 5)
+      str += ' одинаковые части';
+    else if (parts < 21)
+      str += ' одинаковых частей';
+    else
+      switch (parts % 10) {
+        case 1:
+          str += ' одинаковую часть';
+          break;
+        case 2, 3, 4:
+          str += ' одинаковых части';
+          break;
+        default:
+          str += ' одинаковых частей';
+          break;
+      }
+    return str;
+  }
+
+  function initPartButton() {
+    let str = '<b>' + parts + '</b><br>';
+    if (parts < 5)
+      str += 'Части';
+    else if (parts < 21)
+      str += 'Частей';
+    else
+      switch (parts % 10) {
+        case 1:
+          str += 'Часть';
+          break;
+        case 2, 3, 4:
+          str += 'Части';
+          break;
+        default:
+          str += 'Частей';
+          break;
+      }
+    $('.toolbar_resolver>div[name=parts]>div').html(str);
+  }
+
+  var task_id = 0;
+  var resolve_id = [];
+
+  function startAjaxGetTask() {
+    $.ajax({
+      xhrFields: {
+        withCredentials: true
+      },
+      type: "POST",
+      url: 'https://zadachi.matclass.ru/api/get_task',
+      data: {
+        csrfmiddlewaretoken: getCookie('csrftoken'),
+        id: task_id
+      },
+      success: function(response) {
+        if (response.success == "true") {
+          resolve_id.push(response.resolve_id);
+          initTask(response.task);
+        } else { // обработка ошибок
+          myAlert(response.error);
+        }
+      },
+      error: function(response, statusText, error) {
+        myAlert(error);
+      }
+    });
+  }
+
+  var attempts = 0;
+
+  function ajaxSuccessTaskResolved() {
+    let data = {
+      csrfmiddlewaretoken: getCookie('csrftoken'),
+      attempts: attempts,
+      resolve_id: resolve_id[0],
+      step_logger: JSON.stringify(steplogger),
+      id: parseInt(location.search.substring(4))
+    }
+    $.ajax({
+      xhrFields: {
+        withCredentials: true
+      },
+      type: "POST",
+      url: 'https://zadachi.matclass.ru/api/success_task_resolved',
+      data: data,
+      success: function(response) {
+        if (response.resolve_id != undefined)
+          resolve_id.push(response.resolve_id);
+        attempts++;
+      },
+      error: function(response, statusText, error) {}
+    });
+  }
+
+  function startAjax() {
+    if (location.search.substring(0, 4) != '?id=' || location.search.substring(4) == '')
+      myAlert('Не выбрана задача');
+    else {
+      task_id = parseInt(location.search.substring(4));
+      $.ajax({
+        xhrFields: {
+          withCredentials: true
+        },
+        type: "GET",
+        url: 'https://zadachi.matclass.ru/api/the_user',
+        success: function(response) {
+          setCookie('csrftoken', response.csrftoken);
+          let roles = response.roles;
+          if (roles.length) {
+            let select_roles = $('#auth select[name=roles]:first');
+            for (let i = 0; i < roles.length; i++)
+              select_roles.append('<option value=' + roles[i].id + '>' + roles[i].name + '</option>');
+          }
+
+          if (response.success == 'true') {
+            user_auth = true;
+            $('#user_fio').html(response.user.fio);
+            getUserFavoriteTasks();
+          } else
+            startAjaxGetTask();
+        },
+        error: function(response, statusText, error) {
+          myAlert(error);
+        }
+      });
+    }
+  }
+
+  startAjax();
+  //	ajaxSend('https://zadachi.matclass.ru/api/auth_user');
+  //	ajaxSend('https://zadachi.matclass.ru/api/bd_start_ceed');
+
+  // auth ---
+  var user_auth = false;
+
+  function goToCatalog() {
+    $('#auth').modal('hide');
+    //		location.href = '/';
+  }
+
+  function getPassword() {
+    if (validateLogin('forget'))
+      return false;
+    let el = $('#auth div[name=forget]');
+    let data = {
+      login: el.find('input[name=login]').val()
+    };
+    let url = 'https://zadachi.matclass.ru/api/auth_forget',
+      method = 'POST';
+    myAjax(method, url, data, myCallbackForget)
+  }
+
+  function myCallbackForget(error, response) {
+    if (error) {
+      myAlert(response.message);
+    } else {
+      if (response.success == 'true') {
+        myAlert(response.message);
+      } else {
+        myAlert(response.error);
+      }
+    }
+  }
+
+  function validateLogin(block) {
+    let res = false;
+    let el = $('#auth div[name=' + block + ']');
+    if (notEmail(el.find('input[name=login]').val())) {
+      el.find('input[name=login]').addClass('error_input');
+      res = true;
+    } else
+      el.find('input[name=login]').removeClass('error_input');
+    return res;
+  }
+
+  function getAuth() {
+    if (validateLogin('auth'))
+      return false;
+    let el = $('#auth div[name=auth]');
+    let data = {
+      login: el.find('input[name=login]').val(),
+      pw: el.find('input[name=pw]').val(),
+    };
+    let url = 'https://zadachi.matclass.ru/api/jquery_auth_login',
+      method = 'POST';
+    myAjax(method, url, data, myCallbackLogin)
+  }
+
+  function myCallbackLogin(error, response) {
+    if (error) {
+      myAlert(response.message);
+    } else {
+      if (response.success == 'true') {
+        $('#congratulationModal button').html('Закрыть');
+        $('#user_fio').html(response.user.fio);
+        user_auth = true;
+        $('#auth').modal('hide');
+        myAlert(response.message);
+        getUserFavoriteTasks();
+        if (attempts)
+          signCurrentDecisionsToUser();
+      } else {
+        myAlert(response.error);
+      }
+    }
+  }
+
+  function signCurrentDecisionsToUser() {
+    let data = {
+      resolves_id: resolve_id.join(",")
+    };
+    let url = 'https://zadachi.matclass.ru/api/sign_current_decisions_to_user',
+      method = 'POST';
+    myAjax(method, url, data, myCallbackSignCurrentDecisionsToUser)
+  }
+
+  function myCallbackSignCurrentDecisionsToUser(error, response) {
+    if (error)
+      myAlert(response.message);
+    else if (response.success != 'true')
+      myAlert(response.error);
+  }
+
+  function getReg() {
+    if (validateReg())
+      return false;
+    let el = $('#auth div[name=reg]');
+    let data = {
+      fio: el.find('input[name=fio]').val(),
+      login: el.find('input[name=login]').val(),
+      role_id: el.find('select[name=roles]').val(),
+      pw: el.find('input[name=pw]').val(),
+    };
+    let url = 'https://zadachi.matclass.ru/api/auth_reg',
+      method = 'POST';
+    myAjax(method, url, data, myCallbackReg)
+  }
+
+  function myCallbackReg(error, response) {
+    if (error) {
+      myAlert(response.message);
+    } else {
+      if (response.success == 'true') {
+        myAlert(response.message);
+      } else {
+        myAlert(response.error);
+      }
+    }
+  }
+
+  function validateReg() {
+    let res = false;
+    let el = $('#auth div[name=reg]');
+    if (el.find('input[name=fio]').val().length < 3) {
+      el.find('input[name=fio]').addClass('error_input');
+      res = true;
+    } else
+      el.find('input[name=fio]').removeClass('error_input');
+    if (notEmail(el.find('input[name=login]').val())) {
+      el.find('input[name=login]').addClass('error_input');
+      res = true;
+    } else
+      el.find('input[name=login]').removeClass('error_input');
+    if (el.find('input[name=pw]').val().length < 6) {
+      el.find('input[name=pw]').addClass('error_input');
+      res = true;
+    } else {
+      el.find('input[name=pw]').removeClass('error_input');
+      if (el.find('input[name=pw]').val() != el.find('input[name=pw2]').val()) {
+        el.find('input[name=pw2]').addClass('error_input');
+        res = true;
+      } else {
+        el.find('input[name=pw2]').removeClass('error_input');
+      }
+    }
+    if (el.find('select[name=roles]').val() == '') {
+      el.find('select[name=roles]').addClass('error_input');
+      res = true;
+    } else
+      el.find('select[name=roles]').removeClass('error_input');
+    return res;
+  }
+
+  function errorModal(msg) {
+    $('#errorModalMessage').html(msg);
+    $('#errorModal').modal('show');
+  }
+
+  function notEmail(str) {
+    let emailRegular = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+    if (emailRegular.test(str))
+      return false;
+    else
+      return true;
+  }
+
+  $('#user_fio').on('click', function() {
+    logInOut();
+  });
+
+  function logInOut() {
+    if (user_auth) {
+      let url = 'https://zadachi.matclass.ru/api/auth_logout',
+        method = 'GET';
+      myAjax(method, url, {}, myCallbackLogout)
+    } else
+      $('#auth').modal('show');
+  }
+
+  function myCallbackLogout(error, response) {
+    if (error) {
+      myAlert(response.message);
+    } else {
+      if (response.success == 'true') {
+        $('#user_fio').html('Авторизоваться');
+        user_auth = false;
+        let heart = $('.favor_link_buttons>img.favor');
+        heart.addClass('gray_icon');
+        heart.attr('title', 'добавить задачу в избранное');
+      } else
+        myAlert(response.error);
+    }
+  }
+
+  function copyPasteLinkAuto() {
+    let input = $('#modal_link input:first');
+    let str = $('#modal_link span:first');
+    input.select();
+    if (document.execCommand('copy'))
+      str.html('Ссылка на задачу скопирована в буфер обмена');
+    else
+      str.html('Для копирования ссылки в буфер обмена кликните по ней, затем нажмите CTRL-C и ENTER');
+    input.blur();
+  }
+
+  function showTaskLink() {
+    let link = window.location.origin + '/resolver.html?id=' + task_id;
+    let input = $('#modal_link input:first');
+    input.val(link);
+    $('#modal_link').modal('show');
+    setTimeout(copyPasteLinkAuto, 300);
+  }
+
+  function copyPasteLink() {
+    window.prompt("Скопировать в клипбоард: Ctrl+C, Enter", $('#modal_link input:first').val());
+  }
+
+
+
+  function toggleFavoriteTask() {
+    if (user_auth) {
+      let url = 'https://zadachi.matclass.ru/api/jquery_add_favorite_task',
+        data = {
+          task_id: task.id
+        },
+        method = 'POST';
+      if (!$('.favor_link_buttons>img.favor').hasClass('gray_icon'))
+        url = 'https://zadachi.matclass.ru/api/jquery_delete_task_from_favorite';
+      myAjax(method, url, data, myCallbackToggleFavoriteTask)
+    } else
+      $('#auth').modal('show');
+  }
+
+  function myCallbackToggleFavoriteTask(error, response) {
+    if (error) {
+      myAlert(response.message)
+    } else {
+      if (response.success == 'true') {
+        let heart = $('.favor_link_buttons>img.favor');
+        heart.toggleClass('gray_icon');
+        if (heart.hasClass('gray_icon'))
+          heart.attr('title', 'удалить задачу из избранного');
+        else
+          heart.attr('title', 'добавить задачу в избранное');
+      } else
+        myAlert(response.error);
+    }
+  }
+
+
+  function toggleTaskFavor() {
+    $('.favor_link_buttons>img.favor').toggleClass('gray_icon');
+    let add_task_flag = true;
+    for (let i = 0; i < user_favorite_tasks.length; i++) {
+      if (user_favorite_tasks[i].id == task_id) {
+        user_favorite_tasks.splice(i, 1);
+        add_task_flag = false;
+        break;
+      }
+    }
+    if (add_task_flag)
+      user_favorite_tasks.push({
+        id: task_id
+      });
+  }
+
+
+  function getUserFavoriteTasks() {
+    let url = 'https://zadachi.matclass.ru/api/get_favorite_tasks',
+      method = 'GET';
+    myAjax(method, url, {}, myCallbackGetUserFavoriteTasks)
+  }
+
+  function myCallbackGetUserFavoriteTasks(error, response) {
+    if (error) {
+      myAlert(response.message)
+    } else {
+      if (response.success == 'true') {
+        let user_favorite_tasks = response.tasks;
+        let heart = $('.favor_link_buttons>img.favor');
+        heart.addClass('gray_icon');
+        heart.attr('title', 'добавить задачу в избранное');
+        for (let i = 0; i < user_favorite_tasks.length; i++) {
+          if (user_favorite_tasks[i].id == task_id) {
+            heart.removeClass('gray_icon');
+            heart.attr('title', 'удалить задачу из избранного');
+            break;
+          }
+        }
+        if (task == 0)
+          startAjaxGetTask();
+      } else
+        myAlert(response.error);
+    }
+  }
+</script>
+</body>
+</html>

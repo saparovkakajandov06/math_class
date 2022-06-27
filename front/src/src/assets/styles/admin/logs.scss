@@ -1,0 +1,53 @@
+.logs {
+  margin-top: 30px;
+  &__content {
+    border-radius: 10px;
+    background: #2193b0;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #2193b0, #6dd5ed);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right bottom,  #2193b0, #6dd5ed); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    width: 100%;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.15);
+    overflow: hidden;
+    .no-logs {
+      text-align: center;
+      font-size: 24px;
+      color: white;
+      padding: 10px ;
+    }
+    .actions {
+      .action {
+        border-bottom: 1px solid #a4e6f5;
+        padding: 10px;
+        display: flex;
+        &__date-time {
+          border-right: 1px solid #a4e6f5;
+          padding-right: 10px;
+          text-align: center;
+          font-weight: bold;
+          color: white;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        &__content {
+          margin-left: 10px;
+          color: white;
+          &-header {
+            font-weight: bold;
+            font-size: 16px;
+          }
+          a {
+            color: white;
+            border-bottom: 1px solid white;
+            transition: all .2s;
+            text-decoration: none;
+            &:hover {
+              border-bottom: 1px solid transparent;
+            }
+          }
+        }
+      }
+    }
+  }
+}

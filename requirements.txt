@@ -1,0 +1,8 @@
+Django~=3.2.6
+djangorestframework==3.10.3
+psycopg2-binary==2.8.4
+httplib2==0.19.1
+environs~=8.0.0
+gunicorn~=20.1.0
+
+django-cors-headers==3.8.0

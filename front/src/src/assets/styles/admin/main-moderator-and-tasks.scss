@@ -1,0 +1,80 @@
+@import "src/assets/styles/animations";
+
+.main-moderator-and-tasks {
+  margin-top: 40px;
+  h1 {
+    margin-bottom: 0;
+  }
+  h1 + p a {
+    margin: 0;
+    color: #323232;
+    border-bottom: 1px solid silver;
+    text-decoration: none;
+    transition: all .2s;
+    &:hover {
+      border-bottom: 1px solid transparent;
+    }
+  }
+  table {
+    width: 100%;
+    thead {
+      tr {
+        border-bottom: 2px solid black;
+        height: 50px;
+        th {
+          text-align: center;
+          &:first-child {
+            border-right: 1px solid black;
+          }
+          &:nth-child(2), &:nth-child(3) {
+            text-align: left;
+          }
+          &:nth-child(2) {
+            padding-left: 10px;
+          }
+          &:last-child {
+            text-align: right;
+          }
+        }
+      }
+    }
+    tbody {
+      tr {
+        border-bottom: 1px solid silver;
+        height: 60px;
+        transition: all .15s;
+        &:nth-child(even) {
+          background: #f8f8f8;
+        }
+        &:hover {
+          background: #efefef;
+          cursor: pointer;
+        }
+        td {
+          white-space: nowrap; /* Отменяем перенос текста */
+          overflow: hidden; /* Обрезаем содержимое */
+          text-overflow: ellipsis; /* Многоточие */
+          text-align: center;
+          &:nth-child(2), &:nth-child(3) {
+            text-align: left;
+          }
+          &:nth-child(2) {
+            padding-left: 10px;
+          }
+          &:first-child {
+            text-align: center;
+            width: 100px;
+            font-weight: bold;
+            border-right: 1px solid silver;
+          }
+          &:last-child {
+            padding-right: 15px;
+            max-width: 220px;
+            text-align: right;
+          }
+        }
+      }
+    }
+
+  }
+}

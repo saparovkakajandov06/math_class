@@ -1,0 +1,45 @@
+h2 {
+  margin-bottom: 25px;
+  margin-top: 15px;
+  font-size: 25px;
+}
+
+ul {
+  padding: 0;
+  margin: 0 0 25px 0;
+  li {
+    font-size: 16px;
+    text-align: left;
+    list-style-type: none;
+  }
+}
+
+.form-block {
+  form {
+    label {
+      text-align: left;
+      width: 100%;
+    }
+
+    textarea {
+      height: 120px;
+      margin-bottom: 15px;
+      resize: none;
+    }
+
+    input, button, .custom-checkbox {
+      display: block !important;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+  }
+}
+
+.buttons {
+  .main-buttons {
+    display: flex;
+    button:not(button:last-child) {
+      margin-right: 15px;
+    }
+  }
+}
